@@ -1,60 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/style.css" />
     <title>MarketEye</title>
-</head>
-<body>
-
+  </head>
+  <body>
     <div class="wrapper">
+      <div class="grid-container">
+        <h1 class="product-title">MarketEye</h1>
 
-        <div class="grid-container">
+        <table class="stock-container">
+          <thead>
+            <th>Ticker</th>
+            <th>Target</th>
+            <th>Current</th>
+            <th></th>
+          </thead>
 
-            <h1 class="product-title">MarketEye</h1>
+          <tbody>
+            <tr>
+              <td>TSLA</td>
+              <td>1600.00</td>
+              <td>1201.31</td>
+              <td><span>remove</span></td>
+            </tr>
+            <tr>
+              <td>MSFT</td>
+              <td>245.00</td>
+              <td>201.96</td>
+              <td><span>remove</span></td>
+            </tr>
+            <tr>
+              <td>CCL</td>
+              <td>40.00</td>
+              <td>13.33</td>
+              <td><span>remove</span></td>
+            </tr>
+          </tbody>
+        </table>
 
-
-            <table class="stock-container">
-
-                <thead>
-
-                    <th>Ticker</th>
-                    <th>Target</th>
-                    <th>Current</th>
-
-                </thead>
-
-                <tbody>
-                    <tr>
-                        <td>TSLA</td>
-                        <td>1600.00</td>
-                        <td>1201.31</td>
-                    </tr>
-                    <tr>
-                        <td>MSFT</td>
-                        <td>245.00</td>
-                        <td>201.96</td>
-                    </tr>
-                    <tr>
-                        <td>CCL</td>
-                        <td>40.00</td>
-                        <td>13.33</td>
-                    </tr>
-                </tbody>
-
-            </table>
-
-            <form action="">
-
-                <input type="text" name="ticker" id="ticker" placeholder="ticker">
-                <input type="text" name="targetPrice" id="targetPrice" placeholder="target price">
-                <button type="submit">add to list</button>
-
-            </form>
-
-        </div>
-
+        <form action="" class="add">
+          <input type="text" name="ticker" id="ticker" placeholder="ticker" />
+          <input
+            type="text"
+            name="targetPrice"
+            id="targetPrice"
+            placeholder="target price"
+          />
+          <button type="submit">add to list</button>
+        </form>
+      </div>
     </div>
-
-</body>
+  </body>
 </html>

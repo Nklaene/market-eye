@@ -1,0 +1,42 @@
+body {
+    font-family: sans-serif;
+    text-align: center;
+}
+
+.wrapper {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+}
+
+.grid-container {
+    width: 80%;
+    max-width: 960px;
+    margin: 0 auto;
+    display: grid;
+}
+
+.product-title {
+    font-size: 3rem;
+}
+
+.stock-container {
+    font-size: 1.5rem;
+}
+
+td span {
+    color: red;
+}
+
+td span:hover {
+    cursor: pointer;
+}
+
+.add {
+    display: inline-block;
+    margin: 2rem;
+}
+
+.add input, .add button {
+    width: 20%;
+}

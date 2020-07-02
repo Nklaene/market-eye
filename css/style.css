@@ -45,11 +45,12 @@ nav {
 
 .nav-items {
     list-style-type: none;
-    padding-left: 0;
+    padding: 0.5rem 1rem;
     text-align: center;
     vertical-align: middle;
-    font-size: 1.6rem;
+    font-size: 1.2rem;
 }
+
 
 .nav-item {
     display: inline-block;
@@ -89,7 +90,13 @@ nav {
 }
 
 .remove {
-    visibility: hidden;
+    padding-left: 3rem;
+    color: rgba(0, 0, 0, 0.2);
+}
+
+.remove:hover{
+    cursor: pointer;
+    color: var(--light);
 }
 
 .details {
@@ -102,11 +109,39 @@ nav {
 }
 
 .add {
-    align-content: space-between;
+    padding-left: 2.5rem;
+    display: flex;
+    justify-content: space-evenly;
 }
 
 .add input {
-    width: 35%;
+    width: 36%;
+    height: 1.6rem;
+}
+
+.add button {
+    width: 20%;
+    height: 2rem;
+    background-color: #fff;
+    border: 1px solid var(--dark);
+    border-radius: 5%;
+}
+
+.add button:hover {
+    background-color: var(--dark);
+    color: #fff;
+    cursor: pointer;
+}
+
+/* Side Content */
+
+.side-content {
+    grid-column: 15 / -1;
+    height: 100%;
+}
+
+.graph, .data, .about {
+    margin: 10%;
 }
 
 

@@ -4,6 +4,10 @@ const body = document.querySelector('body');
 const cards = document.querySelector('.cards');
 const form = document.querySelector('form');
 
+let userStocks = {
+}
+
+
 http.open("GET", url);
 http.send();
 
@@ -20,6 +24,9 @@ htmlToElement = html => {
 };
 
 addStock = (ticker, price) => {
+
+    userStocks.ticker = true;
+
     let template = `
         <div class="card">
             <p class="ticker">${ticker}</p>

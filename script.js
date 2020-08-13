@@ -7,7 +7,6 @@ const form = document.querySelector('form');
 let userStocks = {
 }
 
-
 http.open("GET", url);
 http.send();
 
@@ -34,14 +33,20 @@ addStock = (ticker, price) => {
         </div>`;
     let element = htmlToElement(template);
     cards.append(element);
-    document.querySelector('.card:last-of-type').addEventListener('click', e => {
-        removeStock(e.target.parentElement);
+    userStocks[`${ticker}`] = true;
+    let removeBtns = document.querySelectorAll('.remove');
+    removeBtns.forEach(btn => {
+        btn.addEventListener('click', e=> {
+            removeStock(e.target.parentElement, ticker);
+        });
     });
+    console.log(userStocks);
 }
 
 // remove a stock
-removeStock = element => {
+removeStock = (element, ticker) => {
     element.parentElement.removeChild(element);
+    delete userStocks[`${ticker}`];
 }
 
 form.addEventListener('submit', e => {

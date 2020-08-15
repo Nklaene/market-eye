@@ -4,8 +4,7 @@ const body = document.querySelector('body');
 const cards = document.querySelector('.cards');
 const form = document.querySelector('form');
 
-let userStocks = {
-}
+let userStocks = {}
 
 http.open("GET", url);
 http.send();
@@ -45,7 +44,7 @@ addStock = (ticker, price) => {
 
 // remove a stock
 removeStock = (element, ticker) => {
-    element.parentElement.removeChild(element);
+    element.removeChild(element);
     delete userStocks[`${ticker}`];
 }
 

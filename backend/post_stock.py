@@ -1,31 +1,38 @@
 import json
 import requests
 import os
+import boto3
+import logging
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+
 
 def lambda_handler(event, context):
+    logging.info(f"{event} got event")
+    dynamodb = boto3.resource('dynamodb')
 
-    ticker = event['ticker']
-    response = requests.get(f"https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={ticker}&&apikey={os.environ['api']}")
+    ticker = event['ticker'].upper()
+    price = event['price']
+
+    isValidPrice = price > 0 and str(price).isnumeric()
+
+    response = requests.get(
+        f"https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={ticker}&&apikey={os.environ['api']}")
 
     if response.status_code == 200:
+
         stock_json = response.json()['Global Quote']
 
-        if len(stock_json) == 0:
+        if len(stock_json) == 0 or not isValidPrice:
             return {
                 'statusCode': 500,
-                'body': f"Ticker {ticker} invalid"
+                'body': f"Ticker {ticker} invalid or price invalid"
             }
+
+        table = dynamodb.Table('market-eye')
+        table.put_item(Item={'ticker': ticker, 'price': price})
 
         return {
             'statusCode': 200,
             'body': json.dumps(stock_json)
         }
-        
-
-
-# print(lambda_handler(
-#     {
-#         'ticker': 'tsla'
-#     },
-#     True
-# ))

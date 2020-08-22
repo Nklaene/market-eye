@@ -3,18 +3,6 @@ const body = document.querySelector('body');
 const cards = document.querySelector('.cards');
 const form = document.querySelector('form');
 
-// function getData() {
-//     return fetch('https://api.github.com/users/github')
-//       .then(response => {
-//         if (response.status == 200) {
-//           console.log("Got response back inside getData()....");
-//           return response.json();
-//         } else {
-//           throw new HttpError(response);
-//         }
-//       })
-//   }
-
 postStock = (ticker, price) => {
     let data = JSON.stringify({
         "ticker": ticker,
@@ -63,24 +51,6 @@ addStock = (ticker, price) => {
             }
         });
 }
-/*
-
-function myMethod() {
-  return getData()
-    .then(data => {
-      console.log("In myMethod. getData() call has returned.");
-      console.log(JSON.stringify(data));
-    })
-    .catch(err => {
-      if (err instanceof HttpError) {
-        console.log("Error occurred: " + err.response.status);
-      } else {
-        throw err;
-      }
-    });
-}
-myMethod();
-*/
 
 function htmlToElement(html) {
     let template = document.createElement('template');

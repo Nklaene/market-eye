@@ -12,9 +12,10 @@ def lambda_handler(event, context):
     dynamodb = boto3.resource('dynamodb')
 
     ticker = event['ticker'].upper()
-    price = event['price']
+    price =  event['price']
 
-    isValidPrice = price > 0 and str(price).isnumeric()
+    isValidPrice = str(price).isnumeric()
+    isValidPrice = isValidPrice and int(price) > 0
 
     response = requests.get(
         f"https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={ticker}&&apikey={os.environ['api']}")

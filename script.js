@@ -6,7 +6,7 @@ const form = document.querySelector('form');
 postStock = (ticker, price) => {
     let data = JSON.stringify({
         "ticker": ticker,
-        "price": price
+        "price": `${price}`
     });
 
     return fetch(url, {

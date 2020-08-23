@@ -27,7 +27,7 @@ def lambda_handler(event, context):
         if len(stock_json) == 0 or not isValidPrice:
             return {
                 'statusCode': 500,
-                'body': f"Ticker {ticker} invalid or price invalid"
+                'body': f"Ticker {ticker} invalid or price {price} invalid"
             }
 
         table = dynamodb.Table('market-eye')

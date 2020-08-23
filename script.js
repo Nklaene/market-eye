@@ -23,7 +23,6 @@ postStock = (ticker, price) => {
 }
 
 addStock = (ticker, price) => {
-
     return postStock(ticker, price)
         .then(data => {
             let template = `
@@ -35,13 +34,6 @@ addStock = (ticker, price) => {
         </div>`;
             let element = htmlToElement(template);
             cards.append(element);
-
-            let removeBtns = document.querySelectorAll('.remove');
-            removeBtns.forEach(btn => {
-                btn.addEventListener('click', e => {
-                    removeStock(e.target.parentElement, ticker);
-                });
-            });
         })
         .catch(err => {
             if (err instanceof HttpError) {
@@ -50,6 +42,10 @@ addStock = (ticker, price) => {
                 throw err;
             }
         });
+}
+
+function removeStock(element) {
+    element.parentElement.removeChild(element);
 }
 
 function htmlToElement(html) {
@@ -63,3 +59,9 @@ form.addEventListener('submit', e => {
     e.preventDefault();
     addStock(form.ticker.value.toUpperCase(), form.price.value);
 });
+
+document.addEventListener('click',function(e){
+    if(e.target && e.target.classList.contains('remove')){
+          removeStock(e.target.parentElement);
+     }
+ });

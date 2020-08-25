@@ -21,13 +21,20 @@ def lambda_handler(event, context):
         f"https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={ticker}&&apikey={os.environ['api']}")
 
     if response.status_code == 200:
-
+        
         stock_json = response.json()['Global Quote']
 
-        if len(stock_json) == 0 or not isValidPrice:
+        if stock_json == {}:
+
             return {
                 'statusCode': 500,
-                'body': f"Ticker {ticker} invalid or price {price} invalid"
+                'body': f"Ticker {ticker} invalid"
+            }
+
+        if not isValidPrice:
+            return {
+                'statusCode': 500,
+                'body': f"Price {price} invalid"
             }
 
         table = dynamodb.Table('market-eye')

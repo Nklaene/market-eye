@@ -22,6 +22,24 @@ function postStock(ticker, price) {
         })
 }
 
+function deleteStock(element, ticker) {
+    let data = JSON.stringify({
+        "ticker": ticker
+    });
+
+    return fetch(url, {
+        method: 'delete',
+        body: data
+    })
+
+        .then(response => {
+            if (response.status == 200) {
+                element.parentElement.removeChild(element);
+            }
+        })
+
+}
+
 function addStock(ticker, price) {
     return postStock(ticker, price)
         .then(data => {
@@ -51,16 +69,12 @@ function getStocksFromDynamo() {
         })
         .then(function (data) {
             let stocks = data.body.Items;
-            for(let i = 0; i < stocks.length; i++) {
+            for (let i = 0; i < stocks.length; i++) {
                 let ticker = stocks[i].ticker;
                 let price = stocks[i].price;
                 addStock(ticker, price);
             }
-        }) 
-}
-
-function removeStock(element) {
-    element.parentElement.removeChild(element);
+        })
 }
 
 function htmlToElement(html) {
@@ -77,7 +91,8 @@ form.addEventListener('submit', e => {
 
 document.addEventListener('click', function (e) {
     if (e.target && e.target.classList.contains('remove')) {
-        removeStock(e.target.parentElement);
+        let ticker = e.target.parentElement.children[0].innerText;
+        deleteStock(e.target.parentElement, ticker);
     }
 });
 

@@ -1,4 +1,4 @@
-const url = 'https://1ro1a5x4gf.execute-api.us-east-1.amazonaws.com/Prod';
+const url = 'https://1ro1a5x4gf.execute-api.us-east-1.amazonaws.com/Prod/';
 const body = document.querySelector('body');
 const cards = document.querySelector('.cards');
 const form = document.querySelector('form');
@@ -23,7 +23,7 @@ function postStock(ticker, price) {
         })
 }
 
-function addStock(ticker, price){
+function addStock(ticker, price) {
     return postStock(ticker, price)
         .then(data => {
             let template = `
@@ -45,6 +45,21 @@ function addStock(ticker, price){
         });
 }
 
+function getStocksFromDynamo() {
+    fetch(url)
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+            let stocks = data.body.Items;
+            for(let i = 0; i < stocks.length; i++) {
+                let ticker = stocks[i].ticker;
+                let price = stocks[i].price;
+                addStock(ticker, price);
+            }
+        }) 
+}
+
 function removeStock(element) {
     element.parentElement.removeChild(element);
 }
@@ -61,8 +76,10 @@ form.addEventListener('submit', e => {
     addStock(form.ticker.value.toUpperCase(), form.price.value);
 });
 
-document.addEventListener('click',function(e){
-    if(e.target && e.target.classList.contains('remove')){
-          removeStock(e.target.parentElement);
-     }
- });
+document.addEventListener('click', function (e) {
+    if (e.target && e.target.classList.contains('remove')) {
+        removeStock(e.target.parentElement);
+    }
+});
+
+document.onload = getStocksFromDynamo();

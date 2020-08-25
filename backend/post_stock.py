@@ -26,21 +26,21 @@ def lambda_handler(event, context):
 
         if stock_json == {}:
 
-            return {
+            return json.dumps({
                 'statusCode': 500,
                 'body': f"Ticker {ticker} invalid"
-            }
+            })
 
         if not isValidPrice:
-            return {
+            return json.dumps({
                 'statusCode': 500,
                 'body': f"Price {price} invalid"
-            }
+            })
 
         table = dynamodb.Table('market-eye')
         table.put_item(Item={'ticker': ticker, 'price': price})
 
-        return {
+        return json.dumps({
             'statusCode': 200,
             'body': json.dumps(stock_json)
-        }
+        })

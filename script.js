@@ -2,7 +2,6 @@ const url = 'https://1ro1a5x4gf.execute-api.us-east-1.amazonaws.com/Prod/';
 const body = document.querySelector('body');
 const cards = document.querySelector('.cards');
 const form = document.querySelector('form');
-let userStocks = {}; // will populate on load
 
 function postStock(ticker, price) {
     let data = JSON.stringify({

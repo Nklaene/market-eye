@@ -22,8 +22,6 @@ function deleteStock(element, ticker) {
 }
 
 function addStock(ticker, price) {
-
-
     let data = JSON.stringify({
         "ticker": ticker,
         "price": `${price}`
@@ -36,6 +34,7 @@ function addStock(ticker, price) {
         .then(response => response.json())
         .then(data => {
             data = JSON.parse(data);
+            
             if (data["statusCode"] == 200) {
                 addStockToDom(ticker, price);
             }
@@ -61,7 +60,7 @@ function getStocksFromDynamo() {
                 let price = stocks[i].price;
                 addStockToDom(ticker, price);
             }
-        })
+        });
 }
 
 function addStockToDom(ticker, price) {
@@ -69,7 +68,7 @@ function addStockToDom(ticker, price) {
     <div class="card">
        <p class="ticker">${ticker}</p>
        <p class="target">${price}</p>
-       <p class="current">Get from API</p>
+       <p class="current">filler</p>
        <a class="remove fas fa-minus-circle"></a>
    </div>`;
     let element = htmlToElement(template);

@@ -3,6 +3,12 @@ const body = document.querySelector('body');
 const cards = document.querySelector('.cards');
 const form = document.querySelector('form');
 
+// need to implement some type of object to keep track of which stocks the user has so no duplicates can be added to the dom
+
+// also need to implement update functionality
+
+// need to create sns topic & lambda function
+
 
 function deleteStock(element, ticker) {
     let data = JSON.stringify({
@@ -34,10 +40,15 @@ function addStock(ticker, price) {
         .then(response => response.json())
         .then(data => {
             data = JSON.parse(data);
-            
+            let dataBody =  JSON.parse(data['body']);
+            let currentPrice = dataBody["05. price"]
+
+            console.log(dataBody);
+
             if (data["statusCode"] == 200) {
-                addStockToDom(ticker, price);
+                addStockToDom(ticker, price, currentPrice);
             }
+
         })
         .catch(err => {
             if (err instanceof HttpError) {
@@ -57,18 +68,18 @@ function getStocksFromDynamo() {
             let stocks = data.body.Items;
             for (let i = 0; i < stocks.length; i++) {
                 let ticker = stocks[i].ticker;
-                let price = stocks[i].price;
-                addStockToDom(ticker, price);
+                let target = stocks[i].price;
+                addStockToDom(ticker, target);
             }
         });
 }
 
-function addStockToDom(ticker, price) {
+function addStockToDom(ticker, price, currentPrice) {
     let template = `
     <div class="card">
        <p class="ticker">${ticker}</p>
        <p class="target">${price}</p>
-       <p class="current">filler</p>
+       <a class="more">More info</a>
        <a class="remove fas fa-minus-circle"></a>
    </div>`;
     let element = htmlToElement(template);

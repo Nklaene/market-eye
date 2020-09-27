@@ -9,6 +9,19 @@ const form = document.querySelector('form');
 
 // need to create sns topic & lambda function
 
+function getStock(ticker) {
+
+    get_url = `${url}info?ticker=${ticker}`;
+    return fetch(get_url, {
+        method: 'get',
+    })
+    .then(response => {
+        if (response.status == 200) {
+            return response.json();
+        }
+    })
+
+} 
 
 function deleteStock(element, ticker) {
     let data = JSON.stringify({
@@ -40,22 +53,19 @@ function addStock(ticker, price) {
         .then(response => response.json())
         .then(data => {
             data = JSON.parse(data);
-            let dataBody =  JSON.parse(data['body']);
-            let currentPrice = dataBody["05. price"]
-
-            console.log(dataBody);
-
+            console.log('data recieved')
             if (data["statusCode"] == 200) {
-                addStockToDom(ticker, price, currentPrice);
+                addStockToDom(ticker, price);
+            } else {
+                document.querySelector('#ticker').classList.add('error');
+                document.querySelector('#price').classList.add('error');
+                document.getElementById('errorMsg').style.display = 'block';
             }
 
         })
         .catch(err => {
-            if (err instanceof HttpError) {
-                console.log("Error occurred: " + err.response.status);
-            } else {
-                throw err;
-            }
+            console.log('API throttling')
+            
         });
 }
 
@@ -74,7 +84,7 @@ function getStocksFromDynamo() {
         });
 }
 
-function addStockToDom(ticker, price, currentPrice) {
+function addStockToDom(ticker, price) {
     let template = `
     <div class="card">
        <p class="ticker">${ticker}</p>
@@ -102,7 +112,12 @@ document.addEventListener('click', function (e) {
     if (e.target && e.target.classList.contains('remove')) {
         let ticker = e.target.parentElement.children[0].innerText;
         deleteStock(e.target.parentElement, ticker);
+    } else if (e.target && e.target.classList.contains('more')) {
+        
+        let ticker = e.target.parentElement.children[0].innerText;
+        console.log(getStock(ticker));
     }
+
 });
 
 document.onload = getStocksFromDynamo();

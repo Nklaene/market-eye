@@ -15,13 +15,13 @@ function getStock(ticker) {
     return fetch(get_url, {
         method: 'get',
     })
-    .then(response => {
-        if (response.status == 200) {
-            return response.json();
-        }
-    })
+        .then(response => {
+            if (response.status == 200) {
+                return response.json();
+            }
+        })
 
-} 
+}
 
 function deleteStock(element, ticker) {
     let data = JSON.stringify({
@@ -65,7 +65,7 @@ function addStock(ticker, price) {
         })
         .catch(err => {
             console.log('API throttling')
-            
+
         });
 }
 
@@ -82,6 +82,37 @@ function getStocksFromDynamo() {
                 addStockToDom(ticker, target);
             }
         });
+}
+
+function createPopup(info) {
+    console.log(info);
+    let modal = `
+    <div class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <div class="stock-content">
+            <div class="stock-info-left"> 
+                <div class="stock-info-item"><span class="info-title">SYMBOL</span>${info['01. symbol']}</div>
+                <div class="stock-info-item"><span class="info-title">OPEN</span>${info['02. open']}</div>
+                <div class="stock-info-item"><span class="info-title">HIGH</span>${info['03. high']}</div>
+                <div class="stock-info-item"><span class="info-title">LOW</span>${info['04. low']}</div>
+                <div class="stock-info-item"><span class="info-title">PRICE</span>${info['05. price']}</div>
+            </div>
+            <div class="stock-info-right">
+                <div class="stock-info-item"><span class="info-title">VOLUME</span>${info['06. volume']}</div>
+                <div class="stock-info-item"><span class="info-title">LATEST TRADING DAY</span>${info['07. latest trading day']}</div>
+                <div class="stock-info-item"><span class="info-title">PREVIOUS CLOSE</span>${info['08. previous close']}</div>
+                <div class="stock-info-item"><span class="info-title">CHANGE</span>${info['09. change']}</div>
+                <div class="stock-info-item"><span class="info-title">PERCENT CHANGE</span>${info['10. change percent']}</div>
+            </div>
+            </div>
+        </div>
+    </div>`;
+    document.body.innerHTML += modal;
+    document.querySelector('.modal').classList.toggle('show-modal');
+    document.querySelector('.close-button').addEventListener('click', e => {
+        document.querySelector('.modal').classList.toggle('show-modal');
+    });
 }
 
 function addStockToDom(ticker, price) {
@@ -113,11 +144,12 @@ document.addEventListener('click', function (e) {
         let ticker = e.target.parentElement.children[0].innerText;
         deleteStock(e.target.parentElement, ticker);
     } else if (e.target && e.target.classList.contains('more')) {
-        
         let ticker = e.target.parentElement.children[0].innerText;
-        console.log(getStock(ticker));
+        let tickerInfo = getStock(ticker);
+        tickerInfo.then(result => {
+            createPopup(result);
+        });
     }
-
 });
 
 document.onload = getStocksFromDynamo();

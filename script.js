@@ -2,6 +2,7 @@ const url = 'https://1ro1a5x4gf.execute-api.us-east-1.amazonaws.com/Prod/';
 const body = document.querySelector('body');
 const cards = document.querySelector('.cards');
 const form = document.querySelector('form');
+let userStocks = {};
 
 // need to implement some type of object to keep track of which stocks the user has so no duplicates can be added to the dom
 
@@ -36,6 +37,7 @@ function deleteStock(element, ticker) {
         .then(response => {
             if (response.status == 200) {
                 element.parentElement.removeChild(element);
+                delete userStocks[`${ticker}`];
             }
         })
 }
@@ -65,7 +67,6 @@ function addStock(ticker, price) {
         })
         .catch(err => {
             console.log('API throttling')
-
         });
 }
 
@@ -116,15 +117,21 @@ function createPopup(info) {
 }
 
 function addStockToDom(ticker, price) {
-    let template = `
-    <div class="card">
-       <p class="ticker">${ticker}</p>
-       <p class="target">${price}</p>
-       <a class="more">More info</a>
-       <a class="remove fas fa-minus-circle"></a>
-   </div>`;
-    let element = htmlToElement(template);
-    cards.append(element);
+    if (!(ticker in userStocks)) {
+        let template = `
+        <div class="card">
+            <p class="ticker">${ticker}</p>
+            <p class="target">${price}</p>
+            <a class="more">More info</a>
+            <a class="remove fas fa-minus-circle"></a>
+        </div>`;
+        let element = htmlToElement(template);
+        cards.append(element);
+        userStocks[`${ticker}`] = true;
+    } else {
+        console.log("stock already in dom");
+        console.log(userStocks);
+    }
 }
 
 function htmlToElement(html) {
